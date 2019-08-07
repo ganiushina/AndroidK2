@@ -21,4 +21,5 @@
         Написание программы заняло больше 8-ми лет. Теперь учусь на Android, хочу написать мобильное приложение.</string>
     <string name="textviewTemperaure"></string>
     <string name="textviewHudimity"></string>
+    <string name="hint">текст</string>
 </resources>

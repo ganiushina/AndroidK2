@@ -13,6 +13,7 @@
         android:inputType="textPersonName"
         android:text="@string/name"
         android:autofillHints="Введите текст здесь"
+        android:hint="@string/hint"
         tools:targetApi="o" />
 
     <Button

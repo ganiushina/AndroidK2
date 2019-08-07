@@ -1,10 +1,13 @@
 package ru.geekbrains.projectandroid2;
 
+import android.content.Intent;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -23,16 +26,25 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.view.Menu;
+import android.widget.Button;
+import android.widget.LinearLayout;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private SensorManager sensorManager;
+    private List<android.hardware.Sensor> sensors;
+    private android.hardware.Sensor sensorLight;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
         initFloatingActionBtn();
         initSideMenu(toolbar);
@@ -101,7 +113,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            // Handle the camera action
+            fragmentClass = Sensor.class;
+
         } else if (id == R.id.nav_gallery) {
             fragmentClass = About.class;
 

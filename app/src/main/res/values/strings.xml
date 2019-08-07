@@ -7,7 +7,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
+    <string name="menu_home">Temperature</string>
     <string name="menu_gallery">About</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="menu_tools">CallBack</string>
@@ -19,4 +19,6 @@
         Долгое время работала системным администратором. Зачем стало интересно программирование и
         я начала переписывать нашу корпоративную базу данных. Писала на Delphi + MS SQL.
         Написание программы заняло больше 8-ми лет. Теперь учусь на Android, хочу написать мобильное приложение.</string>
+    <string name="textviewTemperaure"></string>
+    <string name="textviewHudimity"></string>
 </resources>

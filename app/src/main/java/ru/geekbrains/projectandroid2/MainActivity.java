@@ -92,27 +92,31 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        Fragment fragment = null;
-        Class fragmentClass = null;
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         if (id == R.id.nav_home) {
-            fragmentClass = Sensor.class;
-
+            setFragment(Sensor.class);
         } else if (id == R.id.nav_gallery) {
-            fragmentClass = About.class;
-
+            setFragment(About.class);
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_tools) {
-            fragmentClass = CallBack.class;
+            setFragment(CallBack.class);
 
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
 
         }
+        item.setChecked(true);
+        setTitle(item.getTitle());
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    private boolean setFragment(Class fragmentClass){
+        boolean isFragment = false;
+        Fragment fragment = null;
 
         try {
             fragment = (Fragment) (fragmentClass != null ? fragmentClass.newInstance() : null);
@@ -123,12 +127,8 @@ public class MainActivity extends AppCompatActivity
         if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-            item.setChecked(true);
-            setTitle(item.getTitle());
+            isFragment = true;
         }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+    return isFragment;
     }
 }

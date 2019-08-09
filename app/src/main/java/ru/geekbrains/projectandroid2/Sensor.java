@@ -14,6 +14,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import java.util.Objects;
+
 public class Sensor extends Fragment implements SensorEventListener {
 
     private SensorManager mSensorManager;
@@ -41,10 +43,12 @@ public class Sensor extends Fragment implements SensorEventListener {
     }
 
     private void getSensors() {
-        mSensorManager = (SensorManager) this.getActivity().getSystemService(Activity.SENSOR_SERVICE);
-        sensorLight = mSensorManager.getDefaultSensor(android.hardware.Sensor.TYPE_LIGHT);
-        sensorTemperature = mSensorManager.getDefaultSensor(android.hardware.Sensor.TYPE_AMBIENT_TEMPERATURE);
-        sensorHumidity = mSensorManager.getDefaultSensor(android.hardware.Sensor.TYPE_RELATIVE_HUMIDITY);
+        mSensorManager = (SensorManager) Objects.requireNonNull(this.getActivity()).getSystemService(Activity.SENSOR_SERVICE);
+        if (mSensorManager != null) {
+            sensorLight = mSensorManager.getDefaultSensor(android.hardware.Sensor.TYPE_LIGHT);
+            sensorTemperature = mSensorManager.getDefaultSensor(android.hardware.Sensor.TYPE_AMBIENT_TEMPERATURE);
+            sensorHumidity = mSensorManager.getDefaultSensor(android.hardware.Sensor.TYPE_RELATIVE_HUMIDITY);
+        }              
     }
 
 
@@ -86,7 +90,7 @@ public class Sensor extends Fragment implements SensorEventListener {
         this.unregisterSensorListener();
     }
 
-    SensorEventListener listenerLight = new SensorEventListener() {
+    private SensorEventListener listenerLight = new SensorEventListener() {
 
         @Override
         public void onAccuracyChanged(android.hardware.Sensor sensor, int accuracy) {}
@@ -104,7 +108,7 @@ public class Sensor extends Fragment implements SensorEventListener {
         textLight.setText(stringBuilder);
     }
 
-    SensorEventListener lisnerTemperature = new SensorEventListener() {
+    private SensorEventListener lisnerTemperature = new SensorEventListener() {
         @Override
         public void onAccuracyChanged(android.hardware.Sensor sensor, int accuracy) {}
 
@@ -121,7 +125,7 @@ public class Sensor extends Fragment implements SensorEventListener {
         textViewTemperature.setText(stringBuilder);
     }
 
-    SensorEventListener listenerHudimity = new SensorEventListener() {
+    private SensorEventListener listenerHudimity = new SensorEventListener() {
         @Override
         public void onAccuracyChanged(android.hardware.Sensor sensor, int accuracy) {}
 
@@ -139,12 +143,18 @@ public class Sensor extends Fragment implements SensorEventListener {
     }
 
     private void registerSensorListener() {
-        mSensorManager.registerListener(listenerLight, sensorLight,
-                SensorManager.SENSOR_DELAY_NORMAL);
-        mSensorManager.registerListener(lisnerTemperature, sensorTemperature,
-                SensorManager.SENSOR_DELAY_NORMAL);
-        mSensorManager.registerListener(listenerHudimity, sensorHumidity,
-                SensorManager.SENSOR_DELAY_NORMAL);
+        if (sensorLight != null) {
+            mSensorManager.registerListener(listenerLight, sensorLight,
+                    SensorManager.SENSOR_DELAY_NORMAL);
+        }
+        if (sensorTemperature != null) {
+            mSensorManager.registerListener(lisnerTemperature, sensorTemperature,
+                    SensorManager.SENSOR_DELAY_NORMAL);
+        }
+        if (sensorHumidity != null) {
+            mSensorManager.registerListener(listenerHudimity, sensorHumidity,
+                    SensorManager.SENSOR_DELAY_NORMAL);
+        }
     }
 
     private void unregisterSensorListener() {

@@ -22,4 +22,5 @@
     <string name="textviewTemperaure"></string>
     <string name="textviewHudimity"></string>
     <string name="hint">текст</string>
+    <string name="sendToast">Отправлено</string>
 </resources>

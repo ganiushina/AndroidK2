@@ -23,7 +23,7 @@ public class CallBack extends Fragment {
             @Override
             public void onClick(View v) {
                 editTextAdd.setText("");
-                Toast.makeText(getActivity(),"Отправлено",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), R.string.sendToast,Toast.LENGTH_LONG).show();
             }
         });
         return viewHierarchy;

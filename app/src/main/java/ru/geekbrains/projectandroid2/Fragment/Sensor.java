@@ -1,20 +1,45 @@
-package ru.geekbrains.projectandroid2;
+package ru.geekbrains.projectandroid2.Fragment;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+
+import ru.geekbrains.projectandroid2.R;
+import ru.geekbrains.projectandroid2.Service.BackgroundService;
+
+import static ru.geekbrains.projectandroid2.MainActivity.BROADCAST_ACTION;
 
 public class Sensor extends Fragment implements SensorEventListener {
 
@@ -25,7 +50,11 @@ public class Sensor extends Fragment implements SensorEventListener {
     private TextView textViewHudimity;
     private TextView textViewTemperature;
     private TextView textLight;
+    private TextView textViewTemperatureFromInet;
 
+
+
+    private ServiceFinishedReceiver receiver = new ServiceFinishedReceiver();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -40,7 +69,10 @@ public class Sensor extends Fragment implements SensorEventListener {
         textViewHudimity = viewSensor.findViewById(R.id.textViewHudimity);
         textViewTemperature = viewSensor.findViewById(R.id.textViewTemperature);
         textLight = viewSensor.findViewById(R.id.textLight);
+        textViewTemperatureFromInet = viewSensor.findViewById(R.id.textViewTemperatureFromInet);
     }
+
+
 
     private void getSensors() {
         mSensorManager = (SensorManager) Objects.requireNonNull(this.getActivity()).getSystemService(Activity.SENSOR_SERVICE);
@@ -48,9 +80,8 @@ public class Sensor extends Fragment implements SensorEventListener {
             sensorLight = mSensorManager.getDefaultSensor(android.hardware.Sensor.TYPE_LIGHT);
             sensorTemperature = mSensorManager.getDefaultSensor(android.hardware.Sensor.TYPE_AMBIENT_TEMPERATURE);
             sensorHumidity = mSensorManager.getDefaultSensor(android.hardware.Sensor.TYPE_RELATIVE_HUMIDITY);
-        }              
+        }
     }
-
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -78,16 +109,21 @@ public class Sensor extends Fragment implements SensorEventListener {
     @Override
     public void onStart() {
         super.onStart();
+        Objects.requireNonNull(getActivity()).registerReceiver(receiver, new IntentFilter(BROADCAST_ACTION));
+        Intent intent = new Intent(getActivity(), BackgroundService.class);
+        getActivity().startService(intent);
 
         if(this.getUserVisibleHint()) {
             this.registerSensorListener();
         }
     }
 
+
     @Override
     public void onStop() {
         super.onStop();
         this.unregisterSensorListener();
+        Objects.requireNonNull(getActivity()).unregisterReceiver(receiver);
     }
 
     private SensorEventListener listenerLight = new SensorEventListener() {
@@ -160,4 +196,22 @@ public class Sensor extends Fragment implements SensorEventListener {
     private void unregisterSensorListener() {
         mSensorManager.unregisterListener(this);
     }
+
+    private class ServiceFinishedReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, final Intent intent) {
+            Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    String result = intent
+                            .getStringExtra(BackgroundService.EXTRA_KEY_OUT);
+                    StringBuilder stringBuilder = new StringBuilder();
+                    stringBuilder.append("Temperature from openweathermap = ").append(result + " C").append("\n").append("=======================================").append("\n");
+                    textViewTemperatureFromInet.setText(stringBuilder);
+                }
+            });
+        }
+    }
 }
+

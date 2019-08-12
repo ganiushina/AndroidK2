@@ -1,4 +1,4 @@
-package ru.geekbrains.projectandroid2;
+package ru.geekbrains.projectandroid2.Fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import ru.geekbrains.projectandroid2.R;
 
 public class About extends Fragment {
 

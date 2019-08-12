@@ -1,5 +1,6 @@
 package ru.geekbrains.projectandroid2;
 
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -24,9 +25,16 @@ import androidx.fragment.app.FragmentManager;
 
 import android.view.Menu;
 
+import ru.geekbrains.projectandroid2.Fragment.About;
+import ru.geekbrains.projectandroid2.Fragment.CallBack;
+import ru.geekbrains.projectandroid2.Fragment.Sensor;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    public static final String BROADCAST_ACTION = "ru.geekbrains.projectandroid2.service";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +46,7 @@ public class MainActivity extends AppCompatActivity
         initFloatingActionBtn();
         initSideMenu(toolbar);
     }
+
 
     private void initFloatingActionBtn() {
         FloatingActionButton fab = findViewById(R.id.fab);

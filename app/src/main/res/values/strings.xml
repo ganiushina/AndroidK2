@@ -23,4 +23,7 @@
     <string name="textviewHudimity"></string>
     <string name="hint">текст</string>
     <string name="sendToast">Отправлено</string>
+    <string name="textviewTempInet"></string>
+    <string name="buttonLoad">Load File</string>
+    <string name="textviewLoadResult"></string>
 </resources>

@@ -34,6 +34,31 @@
             android:layout_height="wrap_content"
             android:text="@string/textviewTempInet" />
 
+        <TextView
+            android:id="@+id/textViewLoadResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/textviewLoadResult" />
+
+
+        <Button
+            android:id="@+id/buttonLoad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonLoad" />
+
+        <TextView
+            android:id="@+id/textViewInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="" />
+
+        <ImageView
+            android:id="@+id/image_1"
+            android:layout_width="match_parent"
+            android:layout_height="92dp"
+            tools:ignore="ContentDescription" />
+
 
     </LinearLayout>
 </ScrollView>

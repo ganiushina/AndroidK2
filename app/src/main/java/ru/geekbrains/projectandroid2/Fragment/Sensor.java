@@ -1,5 +1,6 @@
 package ru.geekbrains.projectandroid2.Fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,29 +13,20 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
-
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
+
 
 import ru.geekbrains.projectandroid2.R;
 import ru.geekbrains.projectandroid2.Service.BackgroundService;
@@ -52,7 +44,9 @@ public class Sensor extends Fragment implements SensorEventListener {
     private TextView textLight;
     private TextView textViewTemperatureFromInet;
 
+    private TextView textViewInfo;
 
+    private ImageView image_1 ;
 
     private ServiceFinishedReceiver receiver = new ServiceFinishedReceiver();
 
@@ -70,9 +64,20 @@ public class Sensor extends Fragment implements SensorEventListener {
         textViewTemperature = viewSensor.findViewById(R.id.textViewTemperature);
         textLight = viewSensor.findViewById(R.id.textLight);
         textViewTemperatureFromInet = viewSensor.findViewById(R.id.textViewTemperatureFromInet);
+        image_1 = viewSensor.findViewById(R.id.image_1);
+        textViewInfo = viewSensor.findViewById(R.id.textViewInfo);
+        Button button = viewSensor.findViewById(R.id.buttonLoad);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                initDownLoadTask();
+            }
+        });
     }
 
-
+    private void initDownLoadTask(){
+        String URL1 = "https://img2.goodfon.ru/wallpaper/nbig/1/c4/samara-ladya-volga-povolzhe.jpg";
+        new DownloadFilesTask(image_1).execute(URL1);    }
 
     private void getSensors() {
         mSensorManager = (SensorManager) Objects.requireNonNull(this.getActivity()).getSystemService(Activity.SENSOR_SERVICE);
@@ -117,7 +122,6 @@ public class Sensor extends Fragment implements SensorEventListener {
             this.registerSensorListener();
         }
     }
-
 
     @Override
     public void onStop() {
@@ -207,11 +211,58 @@ public class Sensor extends Fragment implements SensorEventListener {
                     String result = intent
                             .getStringExtra(BackgroundService.EXTRA_KEY_OUT);
                     StringBuilder stringBuilder = new StringBuilder();
-                    stringBuilder.append("Temperature from openweathermap = ").append(result + " C").append("\n").append("=======================================").append("\n");
+                    stringBuilder.append("Temperature from openweathermap = ").append(result).append(" C").append("\n").append("=======================================").append("\n");
                     textViewTemperatureFromInet.setText(stringBuilder);
                 }
             });
         }
     }
+
+    @SuppressLint("StaticFieldLeak")
+    public class DownloadFilesTask  extends AsyncTask<String, Void, Bitmap> {
+
+        ImageView imageView = null;
+
+        private DownloadFilesTask(ImageView imageView) {
+            this.imageView = imageView;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            textViewInfo.setText("Загрузка начата");
+        }
+
+        protected Bitmap doInBackground(String... addresses) {
+            Bitmap bitmap = null;
+            InputStream in = null;
+            try {
+                URL url = new URL(addresses[0]);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.connect();
+                in = conn.getInputStream();
+                bitmap = BitmapFactory.decodeStream(in);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if(in != null) {
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            imageView.setImageBitmap(result);
+            textViewInfo.setText("Загрузка завершена");
+        }
+    }
+
 }
+
 

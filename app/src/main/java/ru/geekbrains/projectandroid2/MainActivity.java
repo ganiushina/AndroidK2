@@ -27,6 +27,7 @@ import android.view.Menu;
 
 import ru.geekbrains.projectandroid2.Fragment.About;
 import ru.geekbrains.projectandroid2.Fragment.CallBack;
+import ru.geekbrains.projectandroid2.Fragment.Citys;
 import ru.geekbrains.projectandroid2.Fragment.Sensor;
 
 
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity
         initFloatingActionBtn();
         initSideMenu(toolbar);
     }
+
 
 
     private void initFloatingActionBtn() {
@@ -107,6 +109,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_gallery) {
             setFragment(About.class);
         } else if (id == R.id.nav_slideshow) {
+            setFragment(Citys.class);
 
         } else if (id == R.id.nav_tools) {
             setFragment(CallBack.class);

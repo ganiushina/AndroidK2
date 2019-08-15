@@ -29,6 +29,7 @@ import ru.geekbrains.projectandroid2.Fragment.About;
 import ru.geekbrains.projectandroid2.Fragment.CallBack;
 import ru.geekbrains.projectandroid2.Fragment.Citys;
 import ru.geekbrains.projectandroid2.Fragment.Sensor;
+import ru.geekbrains.projectandroid2.Fragment.Web;
 
 
 public class MainActivity extends AppCompatActivity
@@ -115,6 +116,7 @@ public class MainActivity extends AppCompatActivity
             setFragment(CallBack.class);
 
         } else if (id == R.id.nav_share) {
+            setFragment(Web.class);
 
         } else if (id == R.id.nav_send) {
 

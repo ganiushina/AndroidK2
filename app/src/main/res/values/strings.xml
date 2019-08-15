@@ -10,7 +10,7 @@
     <string name="menu_gallery">About</string>
     <string name="menu_slideshow">Citys</string>
     <string name="menu_tools">CallBack</string>
-    <string name="menu_share">Share</string>
+    <string name="menu_share">Web</string>
     <string name="menu_send">Send</string>
     <string name="button">Отправить</string>
     <string name="name" />
@@ -31,5 +31,7 @@
     <string name="textviewPreference">Пока что вы не выбрали никакого города. Нажмите на город и на кнопку Проверить.</string>
     <string name="Check">Проверить</string>
     <string name="YouChoice">Вы выбрали:</string>
+    <string name="buttonGo">Перейти</string>
+    <string name="nameWeb">http://</string>
 
 </resources>

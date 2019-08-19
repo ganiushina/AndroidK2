@@ -28,10 +28,20 @@
     <string name="city_name">city_name</string>
     <string name="checkbox">CheckBox</string>
     <string name="todo">TODO</string>
-    <string name="textviewPreference">Пока что вы не выбрали никакого города. Нажмите на город и на кнопку Проверить.</string>
-    <string name="Check">Проверить</string>
+    <string name="textviewPreference" />
     <string name="YouChoice">Вы выбрали:</string>
     <string name="buttonGo">Перейти</string>
     <string name="nameWeb">http://</string>
+    <string name="network_error">Проблемы с сетью!</string>
+    <string name="currentTemperatureTextView" />
+    <string name="detailsTextView" />
+    <string name="weather_sunny">&#xf00d;</string>
+    <string name="weather_clear_night">&#xf02e;</string>
+    <string name="weather_foggy">&#xf014;</string>
+    <string name="weather_cloudy">&#xf013;</string>
+    <string name="weather_rainy">&#xf019;</string>
+    <string name="weather_snowy">&#xf01b;</string>
+    <string name="weather_thunder">&#xf01e;</string>
+    <string name="weather_drizzle">&#xf01c;</string>
 
 </resources>

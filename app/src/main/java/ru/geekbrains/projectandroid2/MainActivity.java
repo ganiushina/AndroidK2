@@ -1,6 +1,5 @@
 package ru.geekbrains.projectandroid2;
 
-import android.content.IntentFilter;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -27,7 +26,7 @@ import android.view.Menu;
 
 import ru.geekbrains.projectandroid2.Fragment.About;
 import ru.geekbrains.projectandroid2.Fragment.CallBack;
-import ru.geekbrains.projectandroid2.Fragment.Citys;
+import ru.geekbrains.projectandroid2.Fragment.Cites;
 import ru.geekbrains.projectandroid2.Fragment.Sensor;
 import ru.geekbrains.projectandroid2.Fragment.Web;
 
@@ -110,7 +109,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_gallery) {
             setFragment(About.class);
         } else if (id == R.id.nav_slideshow) {
-            setFragment(Citys.class);
+            setFragment(Cites.class);
 
         } else if (id == R.id.nav_tools) {
             setFragment(CallBack.class);
@@ -128,21 +127,16 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private boolean setFragment(Class fragmentClass){
-        boolean isFragment = false;
+    private void setFragment(Class fragmentClass){
         Fragment fragment = null;
-
         try {
             fragment = (Fragment) (fragmentClass != null ? fragmentClass.newInstance() : null);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-            isFragment = true;
         }
-    return isFragment;
     }
 }

@@ -1,11 +1,10 @@
 package ru.geekbrains.projectandroid2.Web;
 
 import android.os.Handler;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -20,7 +19,6 @@ public class OkHttpRequester {
     public OkHttpRequester(OnResponseCompleted listener) {
         this.listener = listener;
     }
-
 
     public void run(String url) {
         OkHttpClient client = new OkHttpClient();        // Клиент
@@ -37,7 +35,7 @@ public class OkHttpRequester {
             public void onResponse(@NonNull Call call, @NonNull Response response)
                     throws IOException {
                 if(response.code() / 100 == 2) { //Все хорошо
-                    final String answer = response.body().string();
+                    final String answer = Objects.requireNonNull(response.body()).string();
 
                     handler.post(new Runnable() {
                         @Override

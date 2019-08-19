@@ -3,7 +3,6 @@ package ru.geekbrains.projectandroid2.Service;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.os.Build;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -14,7 +13,6 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.util.stream.Collectors;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -27,28 +25,24 @@ import static ru.geekbrains.projectandroid2.MainActivity.BROADCAST_ACTION;
 public class BackgroundService extends IntentService {
 
     public static final String EXTRA_KEY_OUT = "EXTRA_OUT";
+    private float temperature = 0.0f;
 
     public BackgroundService() {
         super("background_service");
     }
 
-    //Здесь начинается фоновый поток
     @Override
     protected void onHandleIntent(Intent intent) {
-
-        final float[] temperature = new float[1];
-        temperature[0] =  setTemper();
-        String temp = Float.toString(temperature[0]);
-
+        temperature =  setTemper();
+        String temp = Float.toString(temperature);
         Intent broadcastIntent = new Intent(BROADCAST_ACTION);
         broadcastIntent.putExtra(EXTRA_KEY_OUT, temp);
-
         sendBroadcast(broadcastIntent);
     }
 
     public float setTemper(){
         final String cityName = "Samara";
-        final float[] temperature = new float[1];
+//        float temperature = 0.0f;
         final String WEATHER_URL = String.format("https://api.openweathermap.org/data/2.5/weather?q=%s,ru&appid=", cityName);
         try {
             final URL uri = new URL(WEATHER_URL + BuildConfig.WEATHER_API_KEY);
@@ -59,9 +53,8 @@ public class BackgroundService extends IntentService {
             BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream())); // читаем  данные в поток
             String result = getLines(in);
             Gson gson = new Gson();
-            final WeatherRequest weatherRequest = gson.fromJson(result, WeatherRequest.class);
-            temperature[0] = weatherRequest.getMain().getTemp();
-
+            WeatherRequest weatherRequest = gson.fromJson(result, WeatherRequest.class);
+            temperature = weatherRequest.getMain().getTemp();
         } catch (MalformedURLException e) {
             Log.e(TAG, "Fail URI", e);
             e.printStackTrace();
@@ -70,16 +63,17 @@ public class BackgroundService extends IntentService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return temperature[0] ;
+        return temperature ;
     }
 
     private String getLines(BufferedReader in) {
-        String lines = "";
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            lines = in.lines().collect(Collectors.joining("\n"));
+        String line = null;
+        try {
+            line = in.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return lines;
+        return line;
     }
 
 }

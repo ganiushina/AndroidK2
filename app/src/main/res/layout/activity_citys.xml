@@ -14,12 +14,28 @@
     <TextView
         android:id="@+id/textViewPreference"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="wrap_content"
         android:text="@string/textviewPreference" />
 
-    <Button
-        android:id="@+id/button2"
+    <TextView
+        android:id="@+id/currentTemperatureTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/Check" />
+        android:text="@string/currentTemperatureTextView" />
+
+    <TextView
+        android:id="@+id/detailsTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/detailsTextView" />
+
+    <TextView
+        android:id="@+id/weatherIconTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/updatedTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

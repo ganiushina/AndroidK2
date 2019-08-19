@@ -19,6 +19,10 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CustomViewHold
     private List<City> citys;
     public String strPrefer;
 
+    private ItemCallback onItemTouchListener;
+
+    private SharedPreferences defaultPrefs;
+
     class CustomViewHolder extends ViewHolder  {
 
         TextView cityName;
@@ -28,7 +32,6 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CustomViewHold
         CustomViewHolder(View view) {
             super(view);
             this.cityName = view.findViewById(R.id.cityName);
-
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
@@ -36,10 +39,10 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CustomViewHold
                     if(pos != RecyclerView.NO_POSITION){
                         City clickedDataItem = citys.get(pos);
                         Toast.makeText(v.getContext(), v.getResources().getString(R.string.YouChoice) + " " + clickedDataItem.city, Toast.LENGTH_SHORT).show();
-                        final SharedPreferences defaultPrefs =
-                        PreferenceManager.getDefaultSharedPreferences(v.getContext());
+                        defaultPrefs = PreferenceManager.getDefaultSharedPreferences(v.getContext());
                         saveToPreference(defaultPrefs, clickedDataItem.city);
                         readFromPreference(defaultPrefs);
+                        onItemTouchListener.updateTextView();
                     }
                 }
             });
@@ -50,14 +53,14 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CustomViewHold
             editor.putString(textKey, cityNmae);
             editor.apply();
         }
-
-        private void   readFromPreference(SharedPreferences preferences) {
+        private void readFromPreference(SharedPreferences preferences) {
             strPrefer = preferences.getString(textKey, "");
         }
     }
 
-    public CityAdapter(List<City> citys) {
+    public CityAdapter(List<City> citys, ItemCallback onItemTouchListener) {
         this.citys = citys;
+        this.onItemTouchListener = onItemTouchListener;
     }
 
     @NonNull
@@ -78,6 +81,4 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CustomViewHold
     public int getItemCount() {
         return citys.size();
     }
-
-
 }

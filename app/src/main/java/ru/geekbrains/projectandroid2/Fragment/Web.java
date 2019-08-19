@@ -8,8 +8,6 @@ import android.webkit.URLUtil;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -20,7 +18,7 @@ import ru.geekbrains.projectandroid2.Web.OkHttpRequester;
 
 public class Web extends Fragment {
 
-    OkHttpRequester requester;
+    private OkHttpRequester requester;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -45,9 +43,10 @@ public class Web extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (editTextWeb.getText() != null){
-                    if (URLUtil.isValidUrl(String.valueOf(editTextWeb.getText())))
-                        requester.run(String.valueOf(editTextWeb.getText()));
+                String url = String.valueOf(editTextWeb.getText());
+                if (!url.equals("http://")){
+                    if (URLUtil.isValidUrl(url))
+                        requester.run(url);
                 }
                 else
                     requester.run("https://geekbrains.ru");

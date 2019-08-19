@@ -1,23 +1,23 @@
 [
   {
     "region": "Москва и Московская обл.",
-    "city": "Москва"
+    "city": "Moscow"
   },
   {
     "region": "Санкт-Петербург и область",
-    "city": "Санкт-Петербург"
+    "city": "Saint Petersburg"
   },
 
   {
     "region": "Краснодарский край",
-    "city": "Сочи"
+    "city": "Sochi"
   },
   {
     "region": "Самарская обл.",
-    "city": "Самара"
+    "city": "Samara"
   },
   {
     "region": "Крым",
-    "city": "Севастополь"
+    "city": "Sevastopol"
   }
   ]

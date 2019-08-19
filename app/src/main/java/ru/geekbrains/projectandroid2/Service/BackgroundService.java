@@ -42,7 +42,6 @@ public class BackgroundService extends IntentService {
 
     public float setTemper(){
         final String cityName = "Samara";
-//        float temperature = 0.0f;
         final String WEATHER_URL = String.format("https://api.openweathermap.org/data/2.5/weather?q=%s,ru&appid=", cityName);
         try {
             final URL uri = new URL(WEATHER_URL + BuildConfig.WEATHER_API_KEY);

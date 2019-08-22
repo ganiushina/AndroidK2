@@ -43,5 +43,7 @@
     <string name="weather_snowy">&#xf01b;</string>
     <string name="weather_thunder">&#xf01e;</string>
     <string name="weather_drizzle">&#xf01c;</string>
+    <string name="buttonSave">Сохранить</string>
+    <string name="notEmpty">Уже есть в базе</string>
 
 </resources>

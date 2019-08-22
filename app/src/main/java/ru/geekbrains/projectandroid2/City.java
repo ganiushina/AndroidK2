@@ -1,12 +1,9 @@
 package ru.geekbrains.projectandroid2;
 
-public class City  {
-
-    String region;
+public class City {
     String city;
 
-    public City(String region, String city) {
-        this.region = region;
+    public City( String city) {
         this.city = city;
     }
 }

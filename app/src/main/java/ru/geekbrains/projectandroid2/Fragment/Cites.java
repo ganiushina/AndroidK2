@@ -1,10 +1,13 @@
 package ru.geekbrains.projectandroid2.Fragment;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,8 +27,10 @@ import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -35,8 +40,17 @@ import ru.geekbrains.projectandroid2.City;
 import ru.geekbrains.projectandroid2.CityAdapter;
 import ru.geekbrains.projectandroid2.ItemCallback;
 import ru.geekbrains.projectandroid2.R;
+import ru.geekbrains.projectandroid2.database.CitiesTable;
+import ru.geekbrains.projectandroid2.database.DatabaseHelper;
+import ru.geekbrains.projectandroid2.database.DatabaseHelperWeather;
+import ru.geekbrains.projectandroid2.database.WeatherTable;
 import ru.geekbrains.projectandroid2.rest.OpenWeatherRepo;
 import ru.geekbrains.projectandroid2.rest.entities.WeatherRequestRestModel;
+
+import static ru.geekbrains.projectandroid2.database.WeatherTable.COLUMN_HUMIDITY;
+import static ru.geekbrains.projectandroid2.database.WeatherTable.COLUMN_PRESSURE;
+import static ru.geekbrains.projectandroid2.database.WeatherTable.COLUMN_WEATHER;
+import static ru.geekbrains.projectandroid2.database.WeatherTable.getCityWeather;
 
 public class Cites extends Fragment  implements ItemCallback {
 
@@ -46,7 +60,11 @@ public class Cites extends Fragment  implements ItemCallback {
     private TextView detailsTextView;
     private TextView weatherIconTextView;
     private TextView updatedTextView;
+    private EditText editTextCity;
     private CityAdapter mAdapter;
+
+    private SQLiteDatabase database;
+    private SQLiteDatabase databaseWeather;
 
 
     @Override
@@ -54,6 +72,7 @@ public class Cites extends Fragment  implements ItemCallback {
                              Bundle savedInstanceState) {
         View cityView = inflater.inflate(R.layout.activity_citys, container, false);
         initRecyclerViewAdapter(cityView);
+        initDB();
         populateCityDetails();
         initFonts();
         return cityView;
@@ -65,7 +84,25 @@ public class Cites extends Fragment  implements ItemCallback {
         currentTemperatureTextView = cityView.findViewById(R.id.currentTemperatureTextView);
         detailsTextView = cityView.findViewById(R.id.detailsTextView);
         weatherIconTextView = cityView.findViewById(R.id.weatherIconTextView);
+        editTextCity = cityView.findViewById(R.id.editTextCity);
         updatedTextView = cityView.findViewById(R.id.updatedTextView);
+        Button buttonSave = cityView.findViewById(R.id.buttonSave);
+        buttonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (CitiesTable.findCity(String.valueOf(editTextCity.getText()), database) == 0) {
+                    CitiesTable.addCity(String.valueOf(editTextCity.getText()), database);
+                    cites.add(new City(String.valueOf(editTextCity.getText())));
+                    updateWeatherData(String.valueOf(editTextCity.getText()));
+                    mAdapter.notifyDataSetChanged();
+                }
+                else {
+                    Toast.makeText(getContext(), String.valueOf(editTextCity.getText()) + " " + getString(R.string.notEmpty),
+                            Toast.LENGTH_SHORT).show();
+                }
+                editTextCity.setText("");
+            }
+        });
         mAdapter = new CityAdapter(cites, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -77,8 +114,14 @@ public class Cites extends Fragment  implements ItemCallback {
         Typeface weatherFont = Typeface.createFromAsset(Objects.requireNonNull(getActivity()).getAssets(), "fonts/weather.ttf");
         weatherIconTextView.setTypeface(weatherFont);
     }
+    private void initDB() {
+        database = new DatabaseHelper(getContext()).getWritableDatabase();
+        databaseWeather = new DatabaseHelperWeather(getContext()).getWritableDatabase();
+    }
+
 
     private void populateCityDetails() {
+        List<String> cityName;
         InputStream inputStream = this.getResources().openRawResource(R.raw.russia1);
         BufferedReader bR = new BufferedReader(
                 new InputStreamReader(inputStream));
@@ -101,8 +144,15 @@ public class Cites extends Fragment  implements ItemCallback {
             JSONArray mainObject = new JSONArray(responseStrBuilder.toString());
             for (int i = 0; i < mainObject.length(); i++) {
                 JSONObject object = mainObject.getJSONObject(i);
-                cites.add(new City(object.getString("region"), object.getString("city")));
+                if (CitiesTable.findCity(object.getString("city"), database) == 0)
+                    CitiesTable.addCity(object.getString("city"), database);
             }
+
+            cityName = CitiesTable.getAllCities(database);
+            for (int i = 0; i < cityName.size(); i++) {
+                cites.add(new City(cityName.get(i)));
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -134,17 +184,39 @@ public class Cites extends Fragment  implements ItemCallback {
     }
 
     private void renderWeather(WeatherRequestRestModel model) {
+        int city_id;
+        city_id = CitiesTable.findCity(model.name, database);
+        if (WeatherTable.findWeatherCity(city_id, databaseWeather) == 0)
+            WeatherTable.addWeather(city_id, model.main.pressure, model.main.temp, model.main.humidity, databaseWeather);
+        else
+            WeatherTable.editWeather(city_id, model.main.pressure, model.main.temp, model.main.humidity, databaseWeather);
+        setWeatherInfo(city_id);
         setPlaceName(model.name, model.sys.country);
-        setDetails(model.weather[0].description, model.main.humidity, model.main.pressure);
-        setCurrentTemp(model.main.temp);
-        setUpdatedText(model.dt);
-        setWeatherIcon(model.weather[0].id,
-                model.sys.sunrise * 1000,
-                model.sys.sunset * 1000);
     }
 
-    private void setCurrentTemp(float temp) {
-        String currentTextText = String.format(Locale.getDefault(), "%.2f", temp) + "\u2103";
+    private void setWeatherInfo(int city_id) {
+
+        HashMap<String, String> weather = getCityWeather(city_id, databaseWeather);
+        String weather_humidity = "";
+        String weather_pressure = "";
+
+        for (Map.Entry<String, String> item : weather.entrySet()) {
+            if (item.getKey().equals(COLUMN_WEATHER))
+                setCurrentTemp(item.getValue());
+            if (item.getKey().equals(COLUMN_PRESSURE))
+                weather_pressure = item.getValue();
+            if (item.getKey().equals(COLUMN_HUMIDITY))
+                weather_humidity = item.getValue();
+        }
+        if (!weather_humidity.isEmpty() || !weather_pressure.isEmpty()) {
+            setDetails(weather_humidity, weather_pressure);
+        }
+    }
+
+
+    private void setCurrentTemp(String temp) {
+        float tempTemper = Float.parseFloat(temp);
+        String currentTextText = String.format(Locale.getDefault(), "%.2f", tempTemper) + "\u2103";
         currentTemperatureTextView.setText(currentTextText);
     }
 
@@ -153,54 +225,12 @@ public class Cites extends Fragment  implements ItemCallback {
         textViewPreference.setText(cityText);
     }
 
-    private void setDetails(String description, float humidity, float pressure)  {
-        String detailsText = description.toUpperCase() + "\n"
-                + "Humidity: " + humidity + "%" + "\n"
+    private void setDetails(String humidity, String pressure)  {
+        String detailsText =  "Humidity: " + humidity + "%" + "\n"
                 + "Pressure: " + pressure + "hPa";
         detailsTextView.setText(detailsText);
     }
 
-    private void setWeatherIcon(int actualId, long sunrise, long sunset) {
-        int id = actualId / 100;
-        String icon = "";
-
-        if(actualId == 800) {
-            long currentTime = new Date().getTime();
-            if(currentTime >= sunrise && currentTime < sunset) {
-                icon = "\u2600";
-            } else {
-                icon = getString(R.string.weather_clear_night);
-            }
-        } else {
-            switch (id) {
-                case 2: {
-                    icon = getString(R.string.weather_thunder);
-                    break;
-                }
-                case 3: {
-                    icon = getString(R.string.weather_drizzle);
-                    break;
-                }
-                case 5: {
-                    icon = getString(R.string.weather_rainy);
-                    break;
-                }
-                case 6: {
-                    icon = getString(R.string.weather_snowy);
-                    break;
-                }
-                case 7: {
-                    icon = getString(R.string.weather_foggy);
-                    break;
-                }
-                case 8: {
-                    icon = "\u2601";
-                    break;
-                }
-            }
-        }
-        weatherIconTextView.setText(icon);
-    }
 
     private void setUpdatedText(long dt) {
         DateFormat dateFormat = DateFormat.getDateTimeInstance();

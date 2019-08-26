@@ -1,0 +1,23 @@
+[
+  {
+    "region": "Москва и Московская обл.",
+    "city": "Moscow"
+  },
+  {
+    "region": "Санкт-Петербург и область",
+    "city": "Saint Petersburg"
+  },
+
+  {
+    "region": "Краснодарский край",
+    "city": "Sochi"
+  },
+  {
+    "region": "Самарская обл.",
+    "city": "Samara"
+  },
+  {
+    "region": "Татарстан",
+    "city": "Kazan"
+  }
+  ]

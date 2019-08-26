@@ -2,15 +2,48 @@
     <string name="app_name">ProjectAndroid2</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">Ганюшина Елена</string>
+    <string name="nav_header_subtitle">stimul22@mail.ru</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_tools">Tools</string>
-    <string name="menu_share">Share</string>
+    <string name="menu_home">Temperature</string>
+    <string name="menu_gallery">About</string>
+    <string name="menu_slideshow">Citys</string>
+    <string name="menu_tools">CallBack</string>
+    <string name="menu_share">Web</string>
     <string name="menu_send">Send</string>
+    <string name="button">Отправить</string>
+    <string name="name" />
+    <string name="about">Меня зовут Елена. Я закончила Самарский Государственный Технический университет.
+        Долгое время работала системным администратором. Зачем стало интересно программирование и
+        я начала переписывать нашу корпоративную базу данных. Писала на Delphi + MS SQL.
+        Написание программы заняло больше 8-ми лет. Теперь учусь на Android, хочу написать мобильное приложение.</string>
+    <string name="textviewTemperaure" />
+    <string name="textviewHudimity" />
+    <string name="textviewLoadResult" />
+    <string name="hint">текст</string>
+    <string name="sendToast">Отправлено</string>
+    <string name="textviewTempInet" />
+    <string name="buttonLoad">Load File</string>
+    <string name="city_name">city_name</string>
+    <string name="checkbox">CheckBox</string>
+    <string name="todo">TODO</string>
+    <string name="textviewPreference" />
+    <string name="YouChoice">Вы выбрали:</string>
+    <string name="buttonGo">Перейти</string>
+    <string name="nameWeb">http://</string>
+    <string name="network_error">Проблемы с сетью!</string>
+    <string name="currentTemperatureTextView" />
+    <string name="detailsTextView" />
+    <string name="weather_sunny">&#xf00d;</string>
+    <string name="weather_clear_night">&#xf02e;</string>
+    <string name="weather_foggy">&#xf014;</string>
+    <string name="weather_cloudy">&#xf013;</string>
+    <string name="weather_rainy">&#xf019;</string>
+    <string name="weather_snowy">&#xf01b;</string>
+    <string name="weather_thunder">&#xf01e;</string>
+    <string name="weather_drizzle">&#xf01c;</string>
+    <string name="buttonSave">Сохранить</string>
+    <string name="notEmpty">Уже есть в базе</string>
+
 </resources>

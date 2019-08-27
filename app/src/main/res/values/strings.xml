@@ -45,5 +45,13 @@
     <string name="weather_drizzle">&#xf01c;</string>
     <string name="buttonSave">Сохранить</string>
     <string name="notEmpty">Уже есть в базе</string>
+    <string name="to" />
+    <string name="send">Send</string>
+    <string name="enter_phone_number">Enter phone number</string>
+    <string name="permission_alert_dialog_title">Permission Alert</string>
+    <string name="permission_dialog_message">Давай согласие уже!</string>
+    <string name="action_ok">Ok</string>
+    <string name="welcome">Welcome!</string>
+    <string name="todo1">TODO</string>
 
 </resources>

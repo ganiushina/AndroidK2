@@ -119,7 +119,6 @@ public class Cites extends Fragment  implements ItemCallback {
         databaseWeather = new DatabaseHelperWeather(getContext()).getWritableDatabase();
     }
 
-
     private void populateCityDetails() {
         List<String> cityName;
         InputStream inputStream = this.getResources().openRawResource(R.raw.russia1);

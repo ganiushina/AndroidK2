@@ -27,7 +27,9 @@ import android.view.Menu;
 import ru.geekbrains.projectandroid2.Fragment.About;
 import ru.geekbrains.projectandroid2.Fragment.CallBack;
 import ru.geekbrains.projectandroid2.Fragment.Cites;
+import ru.geekbrains.projectandroid2.Fragment.SendSMS;
 import ru.geekbrains.projectandroid2.Fragment.Sensor;
+import ru.geekbrains.projectandroid2.Fragment.Start;
 import ru.geekbrains.projectandroid2.Fragment.Web;
 
 
@@ -36,18 +38,16 @@ public class MainActivity extends AppCompatActivity
 
     public static final String BROADCAST_ACTION = "ru.geekbrains.projectandroid2.service";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
         initFloatingActionBtn();
         initSideMenu(toolbar);
+        setFragment(Start.class);
     }
-
 
 
     private void initFloatingActionBtn() {
@@ -89,20 +89,15 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
         int id = item.getItemId();
-
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
         int id = item.getItemId();
         if (id == R.id.nav_home) {
             setFragment(Sensor.class);
@@ -110,15 +105,12 @@ public class MainActivity extends AppCompatActivity
             setFragment(About.class);
         } else if (id == R.id.nav_slideshow) {
             setFragment(Cites.class);
-
         } else if (id == R.id.nav_tools) {
             setFragment(CallBack.class);
-
         } else if (id == R.id.nav_share) {
             setFragment(Web.class);
-
         } else if (id == R.id.nav_send) {
-
+            setFragment(SendSMS.class);
         }
         item.setChecked(true);
         setTitle(item.getTitle());

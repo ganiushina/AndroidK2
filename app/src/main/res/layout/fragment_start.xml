@@ -7,11 +7,53 @@
     <TextView
         android:id="@+id/textViewWelcome"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:text="@string/welcome"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textSize="30sp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/mGpsInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/mGpsInfo" />
+
+    <TextView
+        android:id="@+id/mAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/mAddress" />
+
+    <TextView
+        android:id="@+id/TemperatureTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/TemperatureTextView"/>
+
+    <TextView
+        android:id="@+id/txtViewPreference"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/txtViewPreference"/>
+
+    <TextView
+        android:id="@+id/detailsTxtView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/detailsTxtView"/>
+
+    <TextView
+        android:id="@+id/weatherIconTxtView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/weatherIconTxtView"/>
+
+    <TextView
+        android:id="@+id/updateTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/updateTextView"/>
 
     <ImageView
         android:id="@+id/imageView3"
@@ -19,4 +61,5 @@
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/wallpapers"
         android:contentDescription="@string/todo" />
+
 </LinearLayout>

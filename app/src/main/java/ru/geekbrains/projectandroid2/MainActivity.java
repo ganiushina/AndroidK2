@@ -1,10 +1,10 @@
 package ru.geekbrains.projectandroid2;
 
+import android.Manifest;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -12,18 +12,13 @@ import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
 import android.view.MenuItem;
-
 import com.google.android.material.navigation.NavigationView;
-
 import androidx.drawerlayout.widget.DrawerLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
 import android.view.Menu;
-
 import ru.geekbrains.projectandroid2.Fragment.About;
 import ru.geekbrains.projectandroid2.Fragment.CallBack;
 import ru.geekbrains.projectandroid2.Fragment.Cites;
@@ -32,11 +27,12 @@ import ru.geekbrains.projectandroid2.Fragment.Sensor;
 import ru.geekbrains.projectandroid2.Fragment.Start;
 import ru.geekbrains.projectandroid2.Fragment.Web;
 
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String BROADCAST_ACTION = "ru.geekbrains.projectandroid2.service";
+    private Fragment currentFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +43,11 @@ public class MainActivity extends AppCompatActivity
         initFloatingActionBtn();
         initSideMenu(toolbar);
         setFragment(Start.class);
+//        if (savedInstanceState == null){
+//            currentFragment = new DefaultFragment();
+//            getFragmentManager().beginTransaction()
+//                    .add(R.id.frame, currentFragment).commit();
+//        }
     }
 
 
@@ -132,3 +133,4 @@ public class MainActivity extends AppCompatActivity
         }
     }
 }
+

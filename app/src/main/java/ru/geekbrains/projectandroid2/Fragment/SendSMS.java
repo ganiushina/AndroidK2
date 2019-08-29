@@ -16,13 +16,21 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+
+import java.util.Objects;
+
 import ru.geekbrains.projectandroid2.R;
 
 public class SendSMS extends Fragment {
-    private final int permissionRequestCode = 123;
+    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 0;
+
     private EditText editTextTo;
     private EditText txtMessage;
+
+    private String phoneNo;
+    private String message;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -31,13 +39,10 @@ public class SendSMS extends Fragment {
         editTextTo = viewSendSMS.findViewById(R.id.editTextTo);
         txtMessage = viewSendSMS.findViewById(R.id.editTextBody);
         Button buttonSendSMS = viewSendSMS.findViewById(R.id.buttonSendSMS);
-        checkPermission();
         buttonSendSMS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String phoneNo = editTextTo.getText().toString();
-                String message = txtMessage.getText().toString();
-                sendSMS(phoneNo, message);
+                sendSMSMessage();
                 editTextTo.setText("");
                 txtMessage.setText("");
             }
@@ -45,42 +50,34 @@ public class SendSMS extends Fragment {
         return viewSendSMS;
     }
 
-    private void checkPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.RECEIVE_SMS)
-                        != PackageManager.PERMISSION_GRANTED) {
-            final String[] permissions = new String[]{Manifest.permission.RECEIVE_SMS};
-            ActivityCompat.requestPermissions(getActivity(), permissions, permissionRequestCode);
-        }
-    }
+    protected void sendSMSMessage() {
+        phoneNo = editTextTo.getText().toString();
+        message = txtMessage.getText().toString();
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if(requestCode == permissionRequestCode) {
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(getContext(), "Спасибо!", Toast.LENGTH_SHORT).show();
+        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.SEND_SMS)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(Objects.requireNonNull(getActivity()),
+                    Manifest.permission.SEND_SMS)) {
             } else {
-                Toast.makeText(getContext(),
-                        "Извините, апп без данного разрешения может работать неправильно",
-                        Toast.LENGTH_SHORT).show();
+                requestPermissions(new String[]{Manifest.permission.SEND_SMS},
+                        MY_PERMISSIONS_REQUEST_SEND_SMS);
             }
         }
     }
 
-    private void sendSMS(String phoneNumber, String message)    {
-        String SENT = "SMS_SENT";
-        String DELIVERED = "SMS_DELIVERED";
-        try {
-            PendingIntent sentPI = PendingIntent.getBroadcast(getContext(), 0,
-                    new Intent(SENT), 0);
-            PendingIntent deliveredPI = PendingIntent.getBroadcast(getContext(), 0,
-                    new Intent(DELIVERED), 0);
-            SmsManager sms = SmsManager.getDefault();
-            sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
-            Toast.makeText(getContext(), "SMS Sent Successfully", Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            Toast.makeText(getContext(), "SMS Failed to Send, Please try again", Toast.LENGTH_SHORT).show();
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == MY_PERMISSIONS_REQUEST_SEND_SMS) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                SmsManager smsManager = SmsManager.getDefault();
+                smsManager.sendTextMessage(phoneNo, null, message, null, null);
+                Toast.makeText(getContext(), "SMS sent.",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getContext(),
+                        "SMS fail, please try again.", Toast.LENGTH_LONG).show();
+            }
         }
     }
 }

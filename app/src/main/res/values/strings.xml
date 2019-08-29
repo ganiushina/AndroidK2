@@ -51,7 +51,22 @@
     <string name="permission_alert_dialog_title">Permission Alert</string>
     <string name="permission_dialog_message">Давай согласие уже!</string>
     <string name="action_ok">Ok</string>
-    <string name="welcome">Welcome!</string>
+    <string name="welcome">Welcome to</string>
     <string name="todo1">TODO</string>
+    <string name="google_maps_key">AIzaSyBpzkfmPMAxoyKUHJA3rUlViUGK4OTWUv0</string>
+    <string name="mNetInfo" />
+    <string name="mGpsInfo" />
+    <string name="mPassiveInfo" />
+    <string name="mAddress" />
+    <string name="title_location_permission">Permission</string>
+    <string name="text_location_permission">Aceess Permission</string>
+    <string name="ok">ok</string>
+    <string name="TemperatureTextView"/>
+    <string name="txtViewPreference"/>
+    <string name="detailsTxtView"/>
+    <string name="weatherIconTxtView"/>
+    <string name="updateTextView"/>
+
+
 
 </resources>

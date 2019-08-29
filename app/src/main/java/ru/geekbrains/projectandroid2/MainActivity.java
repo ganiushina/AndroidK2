@@ -1,10 +1,10 @@
 package ru.geekbrains.projectandroid2;
 
+import android.Manifest;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -12,29 +12,26 @@ import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
 import android.view.MenuItem;
-
 import com.google.android.material.navigation.NavigationView;
-
 import androidx.drawerlayout.widget.DrawerLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
 import android.view.Menu;
-
 import ru.geekbrains.projectandroid2.Fragment.About;
 import ru.geekbrains.projectandroid2.Fragment.CallBack;
 import ru.geekbrains.projectandroid2.Fragment.Cites;
+import ru.geekbrains.projectandroid2.Fragment.SendSMS;
 import ru.geekbrains.projectandroid2.Fragment.Sensor;
+import ru.geekbrains.projectandroid2.Fragment.Start;
 import ru.geekbrains.projectandroid2.Fragment.Web;
-
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String BROADCAST_ACTION = "ru.geekbrains.projectandroid2.service";
+    private Fragment currentFragment;
 
 
     @Override
@@ -42,12 +39,16 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
         initFloatingActionBtn();
         initSideMenu(toolbar);
+        setFragment(Start.class);
+//        if (savedInstanceState == null){
+//            currentFragment = new DefaultFragment();
+//            getFragmentManager().beginTransaction()
+//                    .add(R.id.frame, currentFragment).commit();
+//        }
     }
-
 
 
     private void initFloatingActionBtn() {
@@ -89,20 +90,15 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
         int id = item.getItemId();
-
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
         int id = item.getItemId();
         if (id == R.id.nav_home) {
             setFragment(Sensor.class);
@@ -110,15 +106,12 @@ public class MainActivity extends AppCompatActivity
             setFragment(About.class);
         } else if (id == R.id.nav_slideshow) {
             setFragment(Cites.class);
-
         } else if (id == R.id.nav_tools) {
             setFragment(CallBack.class);
-
         } else if (id == R.id.nav_share) {
             setFragment(Web.class);
-
         } else if (id == R.id.nav_send) {
-
+            setFragment(SendSMS.class);
         }
         item.setChecked(true);
         setTitle(item.getTitle());
@@ -140,3 +133,4 @@ public class MainActivity extends AppCompatActivity
         }
     }
 }
+
